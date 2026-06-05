@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>배그 무기고 - 드라구노프 시뮬레이터</title>
+    <link rel="stylesheet" href="../css/dmr_css.css">
+    <script src="../js/dmr_parts.js"></script>
+</head>
+<body>
+    <div class="inventory-overlay">
+        <header>
+            <a href="../index.html" class="logo">PUBG ARMORY</a>
+            <div class="weapon-name-header">Dragunov</div>
+            <a href="dmr_list.html" class="close-btn">닫기 [ESC]</a>
+        </header>
+
+        <div class="fixed-info-row">
+            <div class="info-card ammo-762"><span>탄종</span><b>7.62mm</b></div>
+            <div class="info-card damage"><span>데미지</span><b>58~64</b></div>
+            <div class="info-card range"><span>사거리</span><b>500m</b></div>
+            <div class="info-card speed"><span>탄속</span><b>830m/s</b></div>
+            <div class="info-card ammo-count"><span>장탄수</span><b id="info-ammo">10</b></div>
+        </div>
+
+        <div class="main-content">
+            <div class="slot-column">
+                
+                <div class="inv-slot" id="slot-muzzle" onclick="openPop('muzzle', event)"><span>총구</span></div>
+                
+                <div class="inv-slot" style="opacity: 0.15; cursor: default;" title="장착 불가"><span>손잡이</span></div>
+                
+                <!-- 탄창 -->
+                <div class="inv-slot" id="slot-mag" onclick="openPop('mag', event)"><span>탄창</span></div>
+                
+                
+                <div class="inv-slot" id="slot-stock" onclick="openPop('stock', event)"><span>개머리판</span></div>
+            </div>
+
+            <div class="weapon-view">
+                <img src="../img/총-dragunov.webp" alt="Dragunov">
+            </div>
+
+            <div class="stat-column">
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: var(--point-color); font-weight: bold; font-size: 12px;">DRAGUNOV</span>
+                </div>
+                <div class="stat-group" id="group-v"><div class="stat-header"><span>수직 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-h"><div class="stat-header"><span>수평 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-rec"><div class="stat-header"><span>반동 회복력</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-ads"><div class="stat-header"><span>조준 속도 (ADS)</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-reload"><div class="stat-header"><span>장전 효율</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div id="tag-list" class="tag-list"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-menu" id="pop-menu"></div>
+
+    <script>
+        const DATA = DMR_PARTS_DATA;
+        const GUN_ID = 'dragunov'; 
+        
+        const BASE = { v: 28, h: 25, rec: 22, ads: 38, r: 3.2, ammo: 10 };
+        
+        let current = { muzzle: null, mag: null, stock: null };
+
+        function update() {
+            let diffs = { v: 0, h: 0, rec: 0, ads: 0, r: 0, ammo: 0 }; 
+            
+            Object.keys(current).forEach(part => {
+                const slot = document.getElementById(`slot-${part}`);
+                if (!slot) return;
+
+                if (current[part]) {
+                    const itemData = DATA[part][current[part]];
+                    
+                    let finalStats = { ...itemData };
+                    if (itemData.overrides && itemData.overrides[GUN_ID]) {
+                        finalStats = { ...itemData, ...itemData.overrides[GUN_ID] };
+                    }
+
+                    Object.keys(diffs).forEach(key => {
+                        if (key === 'ammo') {
+                            if (finalStats.ammo !== undefined) diffs.ammo = finalStats.ammo - BASE.ammo;
+                        } else {
+                            if (finalStats[key] !== undefined) diffs[key] += finalStats[key];
+                        }
+                    });
+
+                    slot.classList.add('active');
+                    slot.innerHTML = `<img src="${finalStats.img || itemData.img}"><span>${current[part]}</span>`;
+                } else {
+                    slot.classList.remove('active');
+                    slot.innerHTML = `<span>${getLabel(part)}</span>`;
+                }
+            });
+
+            document.getElementById('info-ammo').innerText = BASE.ammo + diffs.ammo;
+            let finalReload = BASE.r * (1 - diffs.r);
+
+            renderSingleBar('v', BASE.v + diffs.v, '%');
+            renderSingleBar('h', BASE.h + diffs.h, '%');
+            renderSingleBar('rec', BASE.rec + diffs.rec, '%');
+            renderSingleBar('ads', BASE.ads + diffs.ads, '%');
+            renderSingleBar('reload', ((4 - finalReload) / 2) * 100, finalReload.toFixed(2) + "s");
+
+            let tags = "";
+            Object.keys(current).forEach(p => {
+                if(current[p]) {
+                    const itemData = DATA[p][current[p]];
+                    const description = (itemData.overrides && itemData.overrides[GUN_ID] && itemData.overrides[GUN_ID].txt) 
+                                        ? itemData.overrides[GUN_ID].txt 
+                                        : itemData.txt;
+                    tags += `<div class="tag-item"><b>${current[p]}</b>${description}</div>`;
+                }
+            });
+            document.getElementById('tag-list').innerHTML = tags || '<div style="color:#444; font-size:11px; text-align:center; padding-top:20px;">착용된 파츠가 없습니다.</div>';
+        }
+
+        function getLabel(part) {
+            return { muzzle: '총구', mag: '탄창', stock: '개머리판' }[part];
+        }
+
+        function renderSingleBar(id, value, label) {
+            const group = document.getElementById(`group-${id}`);
+            const clampedVal = Math.max(0, Math.min(100, value));
+            group.querySelector('.bar-fill').style.width = clampedVal + "%";
+            group.querySelector('.val').innerText = label.includes('s') ? label : Math.round(value) + "%";
+        }
+
+        function openPop(type, e) {
+            const menu = document.getElementById('pop-menu');
+            let html = `<div class="pop-item" onclick="select('${type}', null)"><b>장착 해제</b><span>순정 상태</span></div>`;
+            
+            if (DATA[type]) {
+                Object.keys(DATA[type]).forEach(name => {
+                    const item = DATA[type][name];
+                    const displayTxt = (item.overrides && item.overrides[GUN_ID] && item.overrides[GUN_ID].txt) 
+                                       ? item.overrides[GUN_ID].txt 
+                                       : item.txt;
+                    html += `<div class="pop-item" onclick="select('${type}', '${name}')">
+                                <img src="${item.img}">
+                                <div class="txt-box"><b>${name}</b><span>${displayTxt}</span></div>
+                             </div>`;
+                });
+            }
+
+            menu.innerHTML = html;
+            menu.style.display = 'flex';
+            menu.style.left = (e.pageX + 10) + 'px';
+            menu.style.top = Math.min(e.pageY, window.innerHeight - menu.offsetHeight - 50) + 'px';
+            e.stopPropagation();
+        }
+
+        function select(type, name) {
+            current[type] = name;
+            document.getElementById('pop-menu').style.display = 'none';
+            update();
+        }
+
+        window.onclick = () => document.getElementById('pop-menu').style.display = 'none';
+        window.onload = update; 
+        
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.location.href = 'dmr_list.html';
+        });
+    </script>
+</body>
+</html>

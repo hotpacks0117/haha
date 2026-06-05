@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>배그 무기고 - Tommy Gun 시뮬레이터</title>
+    <link rel="stylesheet" href="../css/smg_css.css">
+    <script src="../js/smg_parts.js"></script>
+    <style>
+        .slot-disabled {
+            opacity: 0.3;
+            cursor: not-allowed !important;
+            filter: grayscale(1);
+        }
+        .slot-disabled:hover { border-color: #333 !important; }
+    </style>
+</head>
+<body>
+    <div class="inventory-overlay">
+        <header>
+            <a href="../index.html" class="logo">PUBG ARMORY</a>
+            <div class="weapon-name-header">TOMMY GUN</div>
+            <a href="smg_list.html" class="close-btn">닫기 [ESC]</a>
+        </header>
+
+        <div class="fixed-info-row">
+            <div class="info-card"><span>탄종</span><b style="color: #fbc02d;">.45 ACP</b></div>
+            <div class="info-card damage"><span>데미지</span><b>40</b></div>
+            <div class="info-card dps"><span>DPS</span><b>466</b></div>
+            <div class="info-card speed"><span>연사속도</span><b>700 RPM</b></div>
+            <div class="info-card speed"><span>탄속</span><b>330m/s</b></div>
+            <div class="info-card ammo-count"><span>장탄수</span><b id="info-ammo">30</b></div>
+        </div>
+
+        <div class="main-content">
+            <div class="slot-column">
+                <div class="inv-slot" id="slot-muzzle" onclick="openPop('muzzle', event)"><span>총구</span></div>
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>손잡이</span></div>
+                <div class="inv-slot" id="slot-mag" onclick="openPop('mag', event)"><span>탄창</span></div>
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>개머리판</span></div>
+            </div>
+
+            <div class="weapon-view">
+                <img src="../img/총-tommy_gun.webp">
+            </div>
+
+            <div class="stat-column">
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: var(--point-color); font-weight: bold; font-size: 12px;">TOMMY GUN</span>
+                </div>
+                <div class="stat-group" id="group-v"><div class="stat-header"><span>수직 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-h"><div class="stat-header"><span>수평 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-rec"><div class="stat-header"><span>반동 회복력</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-ads"><div class="stat-header"><span>조준 속도 (ADS)</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-reload"><div class="stat-header"><span>장전 효율</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div id="tag-list" class="tag-list"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-menu" id="pop-menu"></div>
+
+    <script>
+        const WEAPON_KEY = 'tommy';
+        const DATA = SMG_PARTS_DATA;
+        const BASE = { v: 25, h: 20, rec: 20, ads: 55, r: 2.5, ammo: 30 };
+        let current = { muzzle: null, grip: null, mag: null, stock: null };
+
+        function update() {
+            let finalAmmo = BASE.ammo;
+            let diffs = { v: 0, h: 0, rec: 0, ads: 0, r: 0 };
+            
+            Object.keys(current).forEach(part => {
+                const slot = document.getElementById(`slot-${part}`);
+                if (!slot || slot.classList.contains('slot-disabled')) return;
+                
+                if (current[part]) {
+                    let d = DATA[part][current[part]];
+                    if (d.overrides && d.overrides[WEAPON_KEY]) d = { ...d, ...d.overrides[WEAPON_KEY] };
+                    
+                    Object.keys(diffs).forEach(key => { if (d[key] !== undefined) diffs[key] += d[key]; });
+                    if (part === 'mag' && d.ammo !== undefined) finalAmmo = d.ammo;
+                    
+                    slot.classList.add('active');
+                    slot.innerHTML = `<img src="${d.img}"><span>${current[part].replace(/\(SMG\)/, '')}</span>`;
+                } else {
+                    slot.classList.remove('active');
+                    slot.innerHTML = `<span>${getLabel(part)}</span>`;
+                }
+            });
+
+            document.getElementById('info-ammo').innerText = finalAmmo;
+            renderBar('v', BASE.v + diffs.v, (BASE.v + diffs.v) + "%");
+            renderBar('h', BASE.h + diffs.h, (BASE.h + diffs.h) + "%");
+            renderBar('rec', BASE.rec + diffs.rec, (BASE.rec + diffs.rec) + "%");
+            renderBar('ads', BASE.ads + diffs.ads, (BASE.ads + diffs.ads) + "%");
+            
+            let reloadTime = BASE.r * (1 - diffs.r);
+            renderBar('reload', ((3.0 - reloadTime) / 1.5) * 100, reloadTime.toFixed(2) + "s");
+
+            let tags = "";
+            Object.keys(current).forEach(p => { 
+                if(current[p]) tags += `<div class="tag-item"><b>${current[p].replace(/\(SMG\)/, '')}</b>${DATA[p][current[p]].txt}</div>`; 
+            });
+            document.getElementById('tag-list').innerHTML = tags || '<div style="color:#444; font-size:11px; text-align:center; padding-top:20px;">착용된 파츠가 없습니다.</div>';
+        }
+
+        function getLabel(part) { return { muzzle: '총구', grip: '손잡이', mag: '탄창', stock: '개머리판' }[part]; }
+
+        function renderBar(id, val, label) {
+            const el = document.getElementById(`group-${id}`);
+            if(!el) return;
+            const width = Math.max(20, Math.min(100, val));
+            el.querySelector('.bar-fill').style.width = width + "%";
+            el.querySelector('.val').innerText = label;
+        }
+
+        function openPop(type, e) {
+            if (document.getElementById(`slot-${type}`).classList.contains('slot-disabled')) return;
+            const menu = document.getElementById('pop-menu');
+            let html = `<div class="pop-item" onclick="select('${type}', null)"><b>장착 해제</b><span>순정 상태</span></div>`;
+            Object.keys(DATA[type]).forEach(name => {
+                const item = DATA[type][name];
+                html += `<div class="pop-item" onclick="select('${type}', '${name}')"><img src="${item.img}"><div><b>${name}</b><span>${item.txt}</span></div></div>`;
+            });
+            menu.innerHTML = html;
+            menu.style.display = 'flex';
+            menu.style.left = (e.pageX + 10) + 'px';
+            menu.style.top = Math.min(e.pageY, window.innerHeight - menu.offsetHeight - 50) + 'px';
+            e.stopPropagation();
+        }
+
+        function select(type, name) {
+            current[type] = name;
+            document.getElementById('pop-menu').style.display = 'none';
+            update();
+        }
+
+        window.onclick = () => document.getElementById('pop-menu').style.display = 'none';
+        window.onload = update;
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.location.href = 'smg_list.html'; });
+    </script>
+</body>
+</html>

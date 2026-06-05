@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>PUBG ARMORY - DMR 리스트</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+
+        .crate-badge {
+            font-size: 10px;
+            background: #f44336;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        header { 
+            background-color: rgba(17, 17, 17, 0.9); padding: 20px 50px; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #FF9800;
+        }
+
+        .home-link { 
+            color: #FF9800; 
+            text-decoration: none; 
+            font-weight: 900; 
+            font-size: 24px; 
+            letter-spacing: 2px;
+            transition: 0.3s ease;
+        }
+
+        .home-link:hover {
+            color: #fff; 
+            text-shadow: 0 0 15px #FF9800;
+        }
+
+        .container { padding: 50px; }
+        .title-section { border-left: 5px solid #FF9800; padding-left: 15px; margin-bottom: 40px; }
+        .title-section h2 { margin: 0; font-size: 32px; color: #FF9800; text-transform: uppercase; }
+
+        .weapon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .weapon-card { 
+            background-color: #222; border: 1px solid #333; border-radius: 15px; 
+            padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.4s;
+            position: relative; overflow: hidden;
+            text-decoration: none; 
+            display: block; 
+        }
+        
+        .weapon-card:hover { 
+            border-color: #FF9800; transform: translateY(-10px); 
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.2);
+            background-color: #2a2a2a;
+        }
+
+        .weapon-card img { 
+            width: 100%; height: auto; max-width: 240px; 
+            margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .weapon-card h3 { margin: 10px 0; font-size: 24px; color: #fff; }
+        .weapon-card .ammo { color: #888; font-weight: bold; margin-bottom: 10px; }
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="home-link">PUBG ARMORY</a>
+        <nav style="color: #888; font-size: 14px; font-weight: bold;">DESIGNATED MARKSMAN RIFLES</nav>
+    </header>
+
+    <div class="container">
+        <div class="title-section">
+            <h2>DMR List</h2>
+            <p style="color: #666;">장거리 교전의 핵심, DMR의 상세 정보를 확인하세요.</p>
+        </div>
+
+        <div class="weapon-grid">
+            <!-- Mini14 -->
+            <div class="weapon-card" onclick="location.href='mini14_detail.html'">
+                <img src="../img/총-mini14.webp" alt="Mini14">
+                <h3>Mini14</h3>
+                <p class="ammo">5.56mm</p>
+            </div>
+
+            <!-- QBU -->
+            <div class="weapon-card" onclick="location.href='qbu_detail.html'">
+                <img src="../img/총-qbu.webp" alt="QBU">
+                <h3>QBU</h3>
+                <p class="ammo">5.56mm</p>
+            </div>
+
+            <!-- Mk12 -->
+            <div class="weapon-card" onclick="location.href='mk12_detail.html'">
+                <img src="../img/총-mk12.webp" alt="Mk12">
+                <h3>Mk12</h3>
+                <p class="ammo">5.56mm</p>
+            </div>
+
+            <!-- SKS -->
+            <div class="weapon-card" onclick="location.href='sks_detail.html'">
+                <img src="../img/총-sks.webp" alt="SKS">
+                <h3>SKS</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <!-- SLR -->
+            <div class="weapon-card" onclick="location.href='slr_detail.html'">
+                <img src="../img/총-slr.webp" alt="SLR">
+                <h3>SLR</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <!-- Mk14 -->
+            <div class="weapon-card" onclick="location.href='mk14_detail.html'">
+                <img src="../img/총-mk14.webp" alt="Mk14">
+                <h3>Mk14 <span class="crate-badge">CRATE</span></h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <!-- Dragunov -->
+            <div class="weapon-card" onclick="location.href='dragunov_detail.html'">
+                <img src="../img/총-Dragunov.webp" alt="Dragunov">
+                <h3>Dragunov</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <!-- VSS -->
+            <div class="weapon-card" onclick="location.href='vss_detail.html'">
+                <img src="../img/총-vss.webp" alt="VSS">
+                <h3>VSS</h3>
+                <p class="ammo">9mm</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

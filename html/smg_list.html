@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>PUBG ARMORY - SMG 리스트</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+
+        header { 
+            background-color: rgba(17, 17, 17, 0.9); padding: 20px 50px; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #FF9800; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .home-link { 
+            color: #FF9800; text-decoration: none; font-weight: 900; 
+            font-size: 24px; letter-spacing: 2px; transition: 0.3s ease;
+        }
+        .home-link:hover { color: #fff; text-shadow: 0 0 15px #FF9800; }
+
+        .container { padding: 50px; }
+        .title-section { border-left: 5px solid #FF9800; padding-left: 15px; margin-bottom: 40px; }
+        .title-section h2 { margin: 0; font-size: 32px; color: #FF9800; text-transform: uppercase; }
+
+        .weapon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .weapon-card { 
+            background-color: #222; border: 1px solid #333; border-radius: 15px; 
+            padding: 40px 20px; text-align: center; cursor: pointer; transition: 0.4s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        
+        .weapon-card:hover { 
+            border-color: #FF9800; transform: translateY(-10px); 
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.2);
+            background-color: #2a2a2a;
+        }
+
+        .weapon-card img { 
+            width: 100%; height: auto; max-width: 240px; 
+            margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+            transition: 0.3s;
+        }
+        .weapon-card:hover img { transform: scale(1.05); }
+
+        .weapon-card h3 { margin: 10px 0; font-size: 26px; color: #fff; }
+        .weapon-card .ammo { color: #888; font-weight: bold; margin: 0; font-size: 14px; }
+        
+        .crate-badge {
+            font-size: 10px; background: #f44336; color: white; padding: 2px 8px;
+            border-radius: 4px; margin-left: 8px; vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="home-link">PUBG ARMORY</a>
+        <nav style="color: #888; font-size: 14px; font-weight: bold;">SUBMACHINE GUNS</nav>
+    </header>
+
+    <div class="container">
+        <div class="title-section">
+            <h2>SMG List</h2>
+            <p style="color: #666;">총기를 선택하여 상세 스펙과 커스텀 시뮬레이션을 시작하세요.</p>
+        </div>
+
+        <div class="weapon-grid">
+            <div class="weapon-card" onclick="location.href='uzi_detail.html'">
+                <img src="../img/총-micro_uzi.webp" alt="Micro UZI">
+                <h3>Micro UZI</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='vector_detail.html'">
+                <img src="../img/총-vector.webp" alt="Vector">
+                <h3>Vector</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='bizon_detail.html'">
+                <img src="../img/총-pp19_bizon.webp" alt="PP-19 Bizon">
+                <h3>PP-19 Bizon</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='mp5k_detail.html'">
+                <img src="../img/총-mp5k.webp" alt="MP5K">
+                <h3>MP5K</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='ump_detail.html'">
+                <img src="../img/총-ump45.webp" alt="UMP">
+                <h3>UMP</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='tommy_detail.html'">
+                <img src="../img/총-tommy_gun.webp" alt="Tommy Gun">
+                <h3>Tommy Gun</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='mp9_detail.html'">
+                <img src="../img/총-mp9.webp" alt="MP9">
+                <h3>MP9</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='js9_detail.html'">
+                <img src="../img/총-js9.webp" alt="JS9">
+                <h3>JS9</h3>
+                <p class="ammo">9mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='p90_detail.html'">
+                <img src="../img/총-p90.webp" alt="P90">
+                <h3>P90 <span class="crate-badge">CRATE</span></h3>
+                <p class="ammo">5.7mm</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

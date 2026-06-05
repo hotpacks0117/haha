@@ -1,0 +1,118 @@
+:root {
+    --point-color: #FF9800;
+    --inv-bg: rgba(15, 15, 15, 0.95);
+    --slot-border: #444;
+    --stat-bg: #111;
+    --bar-color: #FF9800;
+
+    /* 컬러 변수 - 9mm를 #FF9800으로 수정 */
+    --color-9mm: #FF9800;
+    --color-p90: #ce93d8;      /* P90 보라색 */
+    --color-damage: #ef5350;   /* 데미지 레드 */
+    --color-dps: #ff5252;      /* DPS 레드 */
+    --color-speed: #4fc3f7;    /* 탄속/연사 */
+    --color-ammo: #81c784;     /* 장탄수 */
+}
+
+body {
+    background-size: cover;
+    color: white; font-family: 'Malgun Gothic', sans-serif; margin: 0;
+    display: flex; align-items: center; justify-content: center; min-height: 100vh;
+    backdrop-filter: brightness(0.15) blur(15px);
+}
+
+.inventory-overlay {
+    width: 1150px; height: 850px;
+    background: var(--inv-bg); border: 1px solid #333;
+    display: flex; flex-direction: column;
+    box-shadow: 0 0 60px rgba(0,0,0,1); position: relative;
+}
+
+header {
+    padding: 20px 40px; border-bottom: 1px solid #333;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.logo {
+    font-weight: 900; font-size: 20px; color: var(--point-color);
+    text-decoration: none; letter-spacing: 1px; transition: 0.3s;
+}
+.logo:hover { color: #fff; text-shadow: 0 0 15px var(--point-color); }
+
+.weapon-name-header { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 4px; text-transform: uppercase; }
+.close-btn { color: #666; text-decoration: none; border: 1px solid #333; padding: 5px 15px; font-size: 11px; font-weight: bold; transition: 0.2s; }
+.close-btn:hover { background: #fff; color: #000; }
+
+/* --- 상단 정보 카드 --- */
+.fixed-info-row {
+    display: flex; justify-content: center; gap: 15px;
+    padding: 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid #222;
+}
+
+.info-card {
+    background: rgba(0,0,0,0.5); border: 1px solid #333;
+    padding: 10px 20px; border-radius: 2px; text-align: center; min-width: 100px; position: relative;
+}
+.info-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #444; }
+
+/* 탄종 색상 */
+.info-card.ammo-9mm::before { background: var(--color-9mm); }
+.info-card.ammo-9mm b { color: var(--color-9mm); }
+
+.info-card.ammo-57mm::before { background: var(--color-p90); }
+.info-card.ammo-57mm b { color: var(--color-p90); }
+
+.info-card.damage::before { background: var(--color-damage); }
+.info-card.damage b { color: var(--color-damage); }
+
+.info-card.dps::before { background: var(--color-dps); }
+.info-card.dps b { color: var(--color-dps); }
+
+.info-card.speed::before { background: var(--color-speed); }
+.info-card.speed b { color: var(--color-speed); }
+
+.info-card.ammo-count::before { background: var(--color-ammo); }
+.info-card.ammo-count b { color: var(--color-ammo); }
+
+.info-card span { display: block; font-size: 10px; color: #777; margin-bottom: 4px; font-weight: bold; text-transform: uppercase; }
+.info-card b { font-size: 16px; color: #ddd; letter-spacing: 1px; font-family: 'Consolas', monospace; }
+
+/* --- 메인 레이아웃 --- */
+.main-content { display: flex; flex: 1; padding: 30px; gap: 40px; overflow: hidden; }
+.slot-column { width: 100px; display: flex; flex-direction: column; gap: 15px; }
+
+.inv-slot {
+    width: 85px; height: 85px; background: rgba(0, 0, 0, 0.7);
+    border: 2px solid var(--slot-border); position: relative;
+    cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; justify-content: center;
+}
+.inv-slot:hover { border-color: var(--point-color); background: rgba(255, 152, 0, 0.1); }
+.inv-slot.active { border-color: var(--point-color); }
+
+.inv-slot img { width: 75%; height: auto; z-index: 1; filter: drop-shadow(0 0 5px rgba(0,0,0,0.8)); }
+.inv-slot span { position: absolute; bottom: 4px; width: 100%; text-align: center; font-size: 9px; color: #666; font-weight: bold; z-index: 2; }
+.inv-slot:hover span, .inv-slot.active span { color: var(--point-color); }
+
+.weapon-view { flex: 2; display: flex; align-items: center; justify-content: center; }
+.weapon-view img { width: 100%; max-width: 650px; filter: drop-shadow(0 15px 60px #000); }
+
+/* --- 우측 패널 --- */
+.stat-column { flex: 1.2; background: rgba(0,0,0,0.5); padding: 25px; border-radius: 4px; border: 1px solid #222; }
+.stat-group { margin-bottom: 18px; }
+.stat-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; font-weight: bold; color: #888; }
+.val { color: #fff; font-family: 'Consolas', monospace; }
+.bar-container { background: var(--stat-bg); height: 8px; border: 1px solid #222; }
+.bar-fill { height: 100%; background: var(--bar-color); width: 0%; transition: 0.4s; }
+
+.tag-list { margin-top: 15px; display: flex; flex-direction: column; gap: 6px; }
+.tag-item { font-size: 11px; padding: 8px 12px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--point-color); animation: fadeIn 0.3s; }
+.tag-item b { color: var(--point-color); display: block; margin-bottom: 2px; }
+
+/* 팝업 */
+.pop-menu { position: fixed; background: #0f0f0f; border: 1px solid var(--point-color); display: none; flex-direction: column; z-index: 1000; width: 340px; }
+.pop-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #222; cursor: pointer; gap: 15px;}
+.pop-item:hover { background: var(--point-color); }
+.pop-item img { width: 45px; height: 45px; background: rgba(0,0,0,0.5); border: 1px solid #333; }
+.pop-item b { color: var(--point-color); font-size: 13px; }
+.pop-item span { font-size: 11px; color: #888; }

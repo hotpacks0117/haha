@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>배그 무기고 - P90 시뮬레이터</title>
+    <link rel="stylesheet" href="../css/smg_css.css">
+    <script src="../js/smg_parts.js"></script>
+    <style>
+        .slot-disabled {
+            opacity: 0.3;
+            cursor: not-allowed !important;
+            filter: grayscale(1);
+        }
+        .slot-disabled:hover { border-color: #333 !important; }
+    </style>
+</head>
+<body>
+    <div class="inventory-overlay">
+        <header>
+            <a href="../index.html" class="logo">PUBG ARMORY</a>
+            <div class="weapon-name-header">P90</div>
+            <a href="smg_list.html" class="close-btn">닫기 [ESC]</a>
+        </header>
+
+        <div class="fixed-info-row">
+            <!-- P90 전용 5.7mm 탄종 -->
+            <div class="info-card ammo-57mm"><span>탄종</span><b style="color: #9c27b0;">5.7mm</b></div>
+            <div class="info-card damage"><span>데미지</span><b>35</b></div>
+            <div class="info-card dps"><span>DPS</span><b>525</b></div>
+            <div class="info-card speed"><span>연사속도</span><b>900 RPM</b></div>
+            <div class="info-card speed"><span>탄속</span><b>400m/s</b></div>
+            <div class="info-card ammo-count"><span>장탄수</span><b>50</b></div>
+        </div>
+
+        <div class="main-content">
+            <div class="slot-column">
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>총구</span></div>
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>손잡이</span></div>
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>탄창</span></div>
+                <div class="inv-slot slot-disabled" title="장착 불가"><span>개머리판</span></div>
+            </div>
+
+            <div class="weapon-view">
+                <img src="../img/총-p90.webp">
+            </div>
+
+            <div class="stat-column">
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: var(--point-color); font-weight: bold; font-size: 12px;">P90</span>
+                </div>
+                <div class="stat-group" id="group-v"><div class="stat-header"><span>수직 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-h"><div class="stat-header"><span>수평 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-rec"><div class="stat-header"><span>반동 회복력</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-ads"><div class="stat-header"><span>조준 속도 (ADS)</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-reload"><div class="stat-header"><span>장전 효율</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="tag-list">
+                    <div class="tag-item"><b>전용 탄약</b>5.7mm</div>
+                    <div class="tag-item"><b>전용 소음기</b>고정형</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WEAPON_KEY = 'p90';
+        const BASE = { v: 25, h: 20, rec: 30, ads: 70, r: 2.0 };
+        
+        function update() {
+            renderBar('v', BASE.v, BASE.v + "%");
+            renderBar('h', BASE.h, BASE.h + "%");
+            renderBar('rec', BASE.rec, BASE.rec + "%");
+            renderBar('ads', BASE.ads, BASE.ads + "%");
+            renderBar('reload', ((3.0 - BASE.r) / 1.5) * 100, BASE.r.toFixed(1) + "s");
+        }
+
+        function renderBar(id, val, label) {
+            const el = document.getElementById(`group-${id}`);
+            if(!el) return;
+            const width = Math.max(20, Math.min(100, val));
+            el.querySelector('.bar-fill').style.width = width + "%";
+            el.querySelector('.val').innerText = label;
+        }
+
+        window.onload = update;
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.location.href = 'smg_list.html'; });
+    </script>
+</body>
+</html>

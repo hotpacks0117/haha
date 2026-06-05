@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>PUBG ARMORY - SR 리스트</title>
+    <style>
+        body { background-color: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+
+        .crate-badge {
+            font-size: 10px;
+            background: #f44336; /* 빨간색 배경 */
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* 헤더 스타일 */
+        header { 
+            background-color: rgba(17, 17, 17, 0.9); padding: 20px 50px; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #FF9800;
+        }
+
+        .home-link { 
+            color: #FF9800; 
+            text-decoration: none; 
+            font-weight: 900; 
+            font-size: 24px; 
+            letter-spacing: 2px;
+            transition: 0.3s ease;
+        }
+
+        .home-link:hover {
+            color: #fff; 
+            text-shadow: 0 0 15px #FF9800;
+        }
+
+        .container { padding: 50px; }
+        .title-section { border-left: 5px solid #FF9800; padding-left: 15px; margin-bottom: 40px; }
+        .title-section h2 { margin: 0; font-size: 32px; color: #FF9800; text-transform: uppercase; }
+
+        .weapon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .weapon-card { 
+            background-color: #222; border: 1px solid #333; border-radius: 15px; 
+            padding: 30px 20px; text-align: center; cursor: pointer; transition: 0.4s;
+            position: relative; overflow: hidden;
+            text-decoration: none; 
+            display: block; 
+        }
+        
+        .weapon-card:hover { 
+            border-color: #FF9800; transform: translateY(-10px); 
+            box-shadow: 0 15px 30px rgba(255, 152, 0, 0.2);
+            background-color: #2a2a2a;
+        }
+
+        .weapon-card img { 
+            width: 100%; height: auto; max-width: 240px; 
+            margin-bottom: 20px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .weapon-card h3 { margin: 10px 0; font-size: 24px; color: #fff; }
+        .weapon-card .ammo { color: #888; font-weight: bold; margin-bottom: 10px; }
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="home-link">PUBG ARMORY</a>
+        <nav style="color: #888; font-size: 14px; font-weight: bold;">SNIPER RIFLES</nav>
+    </header>
+
+    <div class="container">
+        <div class="title-section">
+            <h2>SR List</h2>
+            <p style="color: #666;">일격필살의 위력, 최고의 한 발을 선사하는 저격소총 라인업입니다.</p>
+        </div>
+
+        <div class="weapon-grid">
+            <div class="weapon-card" onclick="location.href='kar98k_detail.html'">
+                <img src="../img/총-kar98k.webp" alt="Kar98k">
+                <h3>Kar98k</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='m24_detail.html'">
+                <img src="../img/총-m24.webp" alt="M24">
+                <h3>M24</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='mosin_detail.html'">
+                <img src="../img/총-mosin.webp" alt="Mosin Nagant">
+                <h3>Mosin Nagant</h3>
+                <p class="ammo">7.62mm</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='win94_detail.html'">
+                <img src="../img/총-win94.webp" alt="Win94">
+                <h3>Win94</h3>
+                <p class="ammo">.45 ACP</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='awm_detail.html'">
+                <img src="../img/총-awm.webp" alt="AWM">
+                <h3>AWM <span class="crate-badge">CRATE</span></h3>
+                <p class="ammo">.300 Magnum</p>
+            </div>
+
+            <div class="weapon-card" onclick="location.href='lynx_detail.html'">
+                <img src="../img/총-lynx.webp" alt="Lynx AMR">
+                <h3>Lynx AMR <span class="crate-badge">CRATE</span></h3>
+                <p class="ammo">.50 BMW</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

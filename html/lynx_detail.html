@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>배그 무기고 - Lynx AMR 시뮬레이터</title>
+    <link rel="stylesheet" href="../css/sr_css.css">
+    <script src="../js/sr_parts.js"></script>
+</head>
+<body>
+    <div class="inventory-overlay">
+        <header>
+            <a href="../index.html" class="logo">PUBG ARMORY</a>
+            <div class="weapon-name-header">Lynx AMR</div>
+            <a href="sr_list.html" class="close-btn">닫기 [ESC]</a>
+        </header>
+
+        <div class="fixed-info-row">
+            <div class="info-card ammo-50bmg"><span>탄종</span><b>.50 BMG</b></div>
+            <div class="info-card damage"><span>데미지</span><b>118</b></div>
+            <div class="info-card range"><span>사거리</span><b>1000m</b></div>
+            <div class="info-card speed"><span>탄속</span><b>1100m/s</b></div>
+            <div class="info-card ammo-count"><span>장탄수</span><b id="info-ammo">10</b></div>
+        </div>
+
+        <div class="main-content">
+            <div class="slot-column">
+                <div class="inv-slot" style="opacity: 0.15; cursor: default;" title="장착 불가"><span>총구</span></div>
+                <div class="inv-slot" style="opacity: 0.15; cursor: default;" title="장착 불가"><span>손잡이</span></div>
+                <div class="inv-slot" style="opacity: 0.15; cursor: default;" title="장착 불가"><span>탄창</span></div>
+                <div class="inv-slot" style="opacity: 0.15; cursor: default;" title="장착 불가"><span>개머리판</span></div>
+            </div>
+
+            <div class="weapon-view">
+                <img src="../img/총-lynx.webp" alt="Lynx AMR">
+            </div>
+
+            <div class="stat-column">
+                <div style="margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: var(--point-color); font-weight: bold; font-size: 12px;">LYNX AMR</span>
+                </div>
+                <div class="stat-group" id="group-v"><div class="stat-header"><span>수직 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-h"><div class="stat-header"><span>수평 반동 제어</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-rec"><div class="stat-header"><span>반동 회복력</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-ads"><div class="stat-header"><span>조준 속도 (ADS)</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div class="stat-group" id="group-reload"><div class="stat-header"><span>장전 효율</span><span class="val"></span></div><div class="bar-container"><div class="bar-fill"></div></div></div>
+                <div id="tag-list" class="tag-list"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pop-menu" id="pop-menu"></div>
+
+    <script>
+        const DATA = SR_PARTS_DATA;
+        const GUN_ID = 'lynx'; 
+        
+        const BASE = { v: 25, h: 30, rec: 40, ads: 20, r: 0, ammo: 10 };
+        let current = { muzzle: null, grip: null, mag: null, stock: null };
+
+        function update() {
+            
+            document.getElementById('info-ammo').innerText = BASE.ammo;
+            
+            renderSingleBar('v', BASE.v, '%');
+            renderSingleBar('h', BASE.h, '%');
+            renderSingleBar('rec', BASE.rec, '%');
+            renderSingleBar('ads', BASE.ads, '%');
+            renderSingleBar('reload', 0, "N/A");
+
+            document.getElementById('tag-list').innerHTML = '<div style="color:#777; font-size:11px; text-align:center; padding-top:20px; line-height: 1.6;">파츠 장착이 불가능한 특수 대물 저격총입니다.<br>기본 탄환(10발) 소진 시 재장전할 수 없습니다.</div>';
+        }
+
+        function renderSingleBar(id, value, label) {
+            const group = document.getElementById(`group-${id}`);
+            const clampedVal = Math.max(0, Math.min(100, value));
+            group.querySelector('.bar-fill').style.width = clampedVal + "%";
+            group.querySelector('.val').innerText = label.includes('s') || label === 'N/A' ? label : Math.round(value) + "%";
+        }
+
+        function openPop(type, e) {
+            return;
+        }
+
+        window.onload = update; 
+        
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.location.href = 'sr_list.html';
+        });
+    </script>
+</body>
+</html>
